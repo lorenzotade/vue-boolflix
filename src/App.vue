@@ -12,8 +12,8 @@
 
 <script>
 import axios from 'axios'
-import Header from '@/components/Header.vue'
-import Main from '@/components/Main.vue'
+import Header from './components/Header.vue'
+import Main from './components/Main.vue'
 
 export default {
   name: 'App',
@@ -61,5 +61,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '@/assets/style/general.scss';
+  @import './assets/style/general.scss';
 </style>
