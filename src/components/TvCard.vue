@@ -1,60 +1,59 @@
 <template>
   <section>
-    <div class="filmCard mb-3">
+    <div class="tvCard mb-3">
       <ul>
-        <li><span>Titolo:</span> {{ film.title }}</li>
-        <li><span>Titolo originale:</span> {{ film.original_title }}</li>
+        <li><span>Titolo:</span> {{ show.name }}</li>
+        <li><span>Titolo originale:</span> {{ show.original_name }}</li>
         <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
-        <li><span>Voto:</span> {{ film.vote_average }}</li>
+        <li><span>Voto:</span> {{ show.vote_average }}</li>
       </ul>
     </div>
   </section>
-  
 </template>
 
 <script>
 import CountryFlag from 'vue-country-flag'
 
 export default {
-  name: 'FilmCard',
+  name: 'TvCard',
   components: {
     CountryFlag
   },
+  props: {
+    show: Object
+  },
   data() {
     return {
-      filmObj: this.film
+      showObj: this.show
     }
-  },
-  props: {
-    film: Object
   },
   computed: {
     filterLang() {
-      if (this.filmObj.original_language === 'en') {
+      if (this.showObj.original_language === 'en') {
         return 'gb'
-      } else if (this.filmObj.original_language === 'ja') {
+      } else if (this.showObj.original_language === 'ja') {
         return 'jp'
-      } else if (this.filmObj.original_language === 'zh') {
+      } else if (this.showObj.original_language === 'zh') {
         return 'cn'
-      } else if (this.filmObj.original_language === 'hi') {
+      } else if (this.showObj.original_language === 'hi') {
         return 'in'
-      } else if (this.filmObj.original_language === 'he') {
+      } else if (this.showObj.original_language === 'he') {
         return 'il'
-      } else if (this.filmObj.original_language === 'cs') {
+      } else if (this.showObj.original_language === 'cs') {
         return 'cz'
-      } else if (this.filmObj.original_language === 'ar') {
+      } else if (this.showObj.original_language === 'ar') {
         return 'sa'
       } else if (this.showObj.original_language === 'ko') {
         return 'kr'
       }
-      return this.filmObj.original_language
+      return this.showObj.original_language
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .filmCard {
+  .tvCard {
     background-color: bisque;
     flex-basis: calc(100% / 5);
     width: 250px;

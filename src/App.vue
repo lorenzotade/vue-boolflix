@@ -5,6 +5,7 @@
     />
     <Main 
       :filmList="filmList"
+      :tvList="tvList"
     />
   </div>
 </template>
@@ -22,30 +23,38 @@ export default {
   },
   data() {
     return {
-      apiURL: 'https://api.themoviedb.org/3/search/movie',
+      apiMoviesURL: 'https://api.themoviedb.org/3/search/movie',
+      apiTvURL: 'https://api.themoviedb.org/3/search/tv',
       apiKey: '5ec3e7079b3cb189d8fa0d92bd66a1c9',
       apiLang: 'it-IT',
+      apiPage: 1,
       apiQuery: '',
-      filmList: []
+      filmList: [],
+      tvList: []
     }
   },
   methods: {
     searching(apiQuery) {
       this.apiQuery = apiQuery;
-      axios.get(this.apiURL, {
+      let request = {
         params: {
           api_key: this.apiKey,
           query: this.apiQuery,
-          language: this.apiLang
+          language: this.apiLang,
+          page: this.apiPage
         }
-      })
-      .then(res => {
-        this.filmList = res.data.results;
-      })
+      }
+      axios.all([
+          axios.get(this.apiMoviesURL, request),
+          axios.get(this.apiTvURL, request)
+        ])
+      .then(axios.spread((resMovies, resTv) => {
+        this.filmList = resMovies.data.results;
+        this.tvList = resTv.data.results;
+      }))
       .catch(err => {
         console.log(err);
-      });
-      this.apiQuery = '';
+      })
     }
   },
 }

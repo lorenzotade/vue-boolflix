@@ -10,8 +10,11 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
+    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "mdb-vue-ui-kit": "^1.0.0-beta5",
+    "vue": "^2.6.11",
+    "vue-country-flag": "^2.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
