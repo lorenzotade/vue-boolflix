@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header
-      @searchQuery="this.searching"
+      @searchQuery="searching"
     />
     <Main 
       :filmList="filmList"
@@ -44,17 +44,19 @@ export default {
           page: this.apiPage
         }
       }
-      axios.all([
-          axios.get(this.apiMoviesURL, request),
-          axios.get(this.apiTvURL, request)
-        ])
-      .then(axios.spread((resMovies, resTv) => {
-        this.filmList = resMovies.data.results;
-        this.tvList = resTv.data.results;
-      }))
-      .catch(err => {
-        console.log(err);
-      })
+      if (apiQuery != '') {
+        axios.all([
+            axios.get(this.apiMoviesURL, request),
+            axios.get(this.apiTvURL, request)
+          ])
+        .then(axios.spread((resMovies, resTv) => {
+          this.filmList = resMovies.data.results;
+          this.tvList = resTv.data.results;
+        }))
+        .catch(err => {
+          console.log(err);
+        })
+      }
     }
   },
 }

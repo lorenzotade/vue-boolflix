@@ -1,11 +1,13 @@
 <template>
   <section>
-    <div class="tvCard mb-3">
+    <div class="card">
+      <img v-if="show.backdrop_path === null" src="https://via.placeholder.com/300x170" :alt="show.title">
+      <img v-if="show.backdrop_path != null" :src="`https://image.tmdb.org/t/p/w300${show.backdrop_path}`" :alt="show.name">
       <ul>
         <li><span>Titolo:</span> {{ show.name }}</li>
         <li><span>Titolo originale:</span> {{ show.original_name }}</li>
         <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
-        <li><span>Voto:</span> {{ show.vote_average }}</li>
+        <li><span>Voto:</span> <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i><i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i></li>
       </ul>
     </div>
   </section>
@@ -22,45 +24,36 @@ export default {
   props: {
     show: Object
   },
-  data() {
-    return {
-      showObj: this.show
-    }
-  },
   computed: {
     filterLang() {
-      if (this.showObj.original_language === 'en') {
+      if (this.show.original_language === 'en') {
         return 'gb'
-      } else if (this.showObj.original_language === 'ja') {
+      } else if (this.show.original_language === 'ja') {
         return 'jp'
-      } else if (this.showObj.original_language === 'zh') {
+      } else if (this.show.original_language === 'zh') {
         return 'cn'
-      } else if (this.showObj.original_language === 'hi') {
+      } else if (this.show.original_language === 'hi') {
         return 'in'
-      } else if (this.showObj.original_language === 'he') {
+      } else if (this.show.original_language === 'he') {
         return 'il'
-      } else if (this.showObj.original_language === 'cs') {
+      } else if (this.show.original_language === 'cs') {
         return 'cz'
-      } else if (this.showObj.original_language === 'ar') {
+      } else if (this.show.original_language === 'ar') {
         return 'sa'
-      } else if (this.showObj.original_language === 'ko') {
+      } else if (this.show.original_language === 'ko') {
         return 'kr'
+      } else if (this.show.original_language === 'sv') {
+        return 'se'
       }
-      return this.showObj.original_language
+      return this.show.original_language
+    },
+    convertVote() {
+      return Math.ceil((this.show.vote_average * 5) / 10)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .tvCard {
-    background-color: bisque;
-    flex-basis: calc(100% / 5);
-    width: 250px;
-    min-height: 150px;
-    
-    span {
-      font-weight: 600;
-    }
-  }
+  
 </style>

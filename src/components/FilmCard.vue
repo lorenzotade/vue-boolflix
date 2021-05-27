@@ -1,11 +1,13 @@
 <template>
   <section>
-    <div class="filmCard mb-3">
+    <div class="card">
+      <img v-if="film.poster_path === null" src="https://via.placeholder.com/300x170" :alt="film.title">
+      <img v-if="film.poster_path != null" :src="`https://image.tmdb.org/t/p/w300${film.poster_path}`" :alt="film.name">
       <ul>
         <li><span>Titolo:</span> {{ film.title }}</li>
         <li><span>Titolo originale:</span> {{ film.original_title }}</li>
         <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
-        <li><span>Voto:</span> {{ film.vote_average }}</li>
+        <li><span>Voto:</span> <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i><i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i></li>
       </ul>
     </div>
   </section>
@@ -20,48 +22,41 @@ export default {
   components: {
     CountryFlag
   },
-  data() {
-    return {
-      filmObj: this.film
-    }
-  },
   props: {
     film: Object
   },
   computed: {
     filterLang() {
-      if (this.filmObj.original_language === 'en') {
+      if (this.film.original_language === 'en') {
         return 'gb'
-      } else if (this.filmObj.original_language === 'ja') {
+      } else if (this.film.original_language === 'ja') {
         return 'jp'
-      } else if (this.filmObj.original_language === 'zh') {
+      } else if (this.film.original_language === 'zh') {
         return 'cn'
-      } else if (this.filmObj.original_language === 'hi') {
+      } else if (this.film.original_language === 'hi') {
         return 'in'
-      } else if (this.filmObj.original_language === 'he') {
+      } else if (this.film.original_language === 'he') {
         return 'il'
-      } else if (this.filmObj.original_language === 'cs') {
+      } else if (this.film.original_language === 'cs') {
         return 'cz'
-      } else if (this.filmObj.original_language === 'ar') {
+      } else if (this.film.original_language === 'ar') {
         return 'sa'
-      } else if (this.showObj.original_language === 'ko') {
+      } else if (this.film.original_language === 'ko') {
         return 'kr'
+      } else if (this.film.original_language === 'sv') {
+        return 'se'
       }
-      return this.filmObj.original_language
+      return this.film.original_language
+    },
+    convertVote() {
+      return Math.ceil((this.film.vote_average * 5) / 10)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .filmCard {
-    background-color: bisque;
-    flex-basis: calc(100% / 5);
-    width: 250px;
-    min-height: 150px;
-    
-    span {
-      font-weight: 600;
-    }
+  .card {
+    min-height: 550px;
   }
 </style>

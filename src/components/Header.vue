@@ -1,11 +1,11 @@
 <template>
-  <header class="mb-3">
-    <div>LOGO</div>
-    <div>
+  <header class="container">
+    <div><h1>BoolFlix</h1></div>
+    <div class="search-console">
       <input 
         type="text" 
-        placeholder="Cerca il film..." 
-        v-model="apiQuery"
+        placeholder="Cerca..." 
+        v-model.trim="apiQuery"
         @keyup.enter="sendQuery()"
       >
       <button @click="sendQuery()">CERCA</button>
@@ -31,5 +31,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    h1 {
+      color: #F00;
+    }
+    .search-console {
+      input {
+        width: 500px;
+        padding: 10px 20px;
+        outline: none;
+      }
+      button {
+        padding: 10px 20px;
+        margin-left: 20px;
+      }
+    }
+  }
 </style>
