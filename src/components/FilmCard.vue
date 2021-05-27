@@ -1,14 +1,22 @@
 <template>
   <section>
     <div class="card">
-      <img v-if="film.poster_path === null" src="https://via.placeholder.com/300x170" :alt="film.title">
+      <img v-if="film.poster_path === null" src="#" :alt="film.title">
       <img v-if="film.poster_path != null" :src="`https://image.tmdb.org/t/p/w300${film.poster_path}`" :alt="film.name">
-      <ul>
-        <li><span>Titolo:</span> {{ film.title }}</li>
-        <li><span>Titolo originale:</span> {{ film.original_title }}</li>
-        <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
-        <li><span>Voto:</span> <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i><i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i></li>
-      </ul>
+      <div class="description-container">
+        <ul>
+          <li><span>Titolo:</span> {{ film.title }}</li>
+          <li><span>Titolo originale:</span> {{ film.original_title }}</li>
+          <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
+          <li>
+            <span>Voto: </span> 
+            <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i>
+            <i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i>
+          </li>
+          <li v-if="film.overview != ''"><span>Overview:</span> {{ film.overview }}</li>
+        </ul>
+      </div>
+      
     </div>
   </section>
   
@@ -56,7 +64,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .card {
-    min-height: 550px;
-  }
+  
 </style>

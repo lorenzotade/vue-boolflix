@@ -1,14 +1,21 @@
 <template>
   <section>
     <div class="card">
-      <img v-if="show.backdrop_path === null" src="https://via.placeholder.com/300x170" :alt="show.title">
+      <img v-if="show.backdrop_path === null" src="#" :alt="show.name">
       <img v-if="show.backdrop_path != null" :src="`https://image.tmdb.org/t/p/w300${show.backdrop_path}`" :alt="show.name">
-      <ul>
-        <li><span>Titolo:</span> {{ show.name }}</li>
-        <li><span>Titolo originale:</span> {{ show.original_name }}</li>
-        <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
-        <li><span>Voto:</span> <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i><i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i></li>
-      </ul>
+      <div class="description-container">
+        <ul>
+          <li><span>Titolo:</span> {{ show.name }}</li>
+          <li><span>Titolo originale:</span> {{ show.original_name }}</li>
+          <li><span>Lingua originale:</span> <CountryFlag :country="this.filterLang" size='small'/></li>
+          <li>
+            <span>Voto: </span> 
+            <i v-for="(i, index) in this.convertVote" :key="index" class="fas fa-star"></i>
+            <i v-for="(i, index) in (5 - this.convertVote)" :key="index" class="far fa-star"></i>
+          </li>
+          <li v-if="show.overview != ''"><span>Overview: </span> {{show.overview}}</li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -55,5 +62,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  
+  .card {
+    height: 200px;
+    img {
+      width: 100%;
+      height: unset;
+    }
+  }
 </style>
