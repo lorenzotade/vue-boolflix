@@ -3,9 +3,15 @@
     <Header
       @searchQuery="searching"
     />
+
     <Main 
       :filmList="filmList"
+      :filmData="filmData"
       :tvList="tvList"
+      :tvData="tvData"
+      :apiPage="apiPage"
+      @pagPrec="pagPrec"
+      @pagSucc="pagSucc"
     />
   </div>
 </template>
@@ -30,12 +36,15 @@ export default {
       apiPage: 1,
       apiQuery: '',
       filmList: [],
-      tvList: []
+      tvList: [],
+      filmData: {},
+      tvData: {}
     }
   },
   methods: {
     searching(apiQuery) {
       this.apiQuery = apiQuery;
+      this.apiPafe = 1;
       let request = {
         params: {
           api_key: this.apiKey,
@@ -50,14 +59,25 @@ export default {
             axios.get(this.apiTvURL, request)
           ])
         .then(axios.spread((resMovies, resTv) => {
+          this.filmData = resMovies.data;
           this.filmList = resMovies.data.results;
+          this.tvData = resTv.data;
           this.tvList = resTv.data.results;
         }))
         .catch(err => {
           console.log(err);
         })
       }
-    }
+      
+    },
+    pagPrec(apiPage) {
+      this.apiPage = apiPage;
+      this.searching(this.apiQuery);
+    },
+    pagSucc(apiPage) {
+      this.apiPage = apiPage;
+      this.searching(this.apiQuery);
+    },
   },
 }
 </script>

@@ -1,21 +1,55 @@
 <template>
   <main class="container">
 
-    <h2 v-if="this.filmList.length === 0 && this.tvList.length === 0">Nessun risultato trovato</h2>
-
     <h3 v-if="this.filmList.length != 0">Film</h3>
+    <div class="page-console">
+      <button 
+        v-if="this.filmList.length != 0" 
+        :disabled="filmData.page === 1" 
+        @click="$emit('pagPrec', apiPage-1)"
+        >
+          Prec.
+        </button>
+      <button 
+        v-if="this.filmList.length != 0" 
+        :disabled="filmData.page === filmData.total_pages" 
+        @click="$emit('pagSucc', apiPage+1)"
+      >
+        Succ.
+      </button>
+    </div>
+    
     <div class="card-container">
-      <FilmCard 
-        :film="film"
-        v-for="film in filmList" :key="film.id"
+      <h2 v-if="this.filmList.length === 0">Nessun film trovato</h2>
+      <Card 
+        :card="card"
+        v-for="card in filmList" :key="card.id"
       />
     </div>
-  
-    <h3 v-if="this.tvList.length != 0">Show</h3>
+
+    <h3 v-if="this.tvList.length != 0">Serie TV</h3>
+    <div class="page-console">
+      <button 
+        v-if="this.tvList.length != 0" 
+        :disabled="tvData.page === 1" 
+        @click="$emit('pagPrec', apiPage-1)"
+      >
+        Prec.
+      </button>
+      <button 
+        v-if="this.tvList.length != 0" 
+        :disabled="tvData.page === tvData.total_pages"
+        @click="$emit('pagSucc', apiPage+1)"
+      >
+        Succ.
+      </button>
+    </div>
+    
     <div class="card-container">
-      <TvCard 
-        :show="show"
-        v-for="show in tvList" :key="show.id"
+      <h2 v-if="this.tvList.length === 0">Nessuna serie TV trovata</h2>
+      <Card 
+        :card="card"
+        v-for="card in tvList" :key="card.id"
       />
     </div>
     
@@ -23,18 +57,19 @@
 </template>
 
 <script>
-import FilmCard from '/src/components/FilmCard.vue'
-import TvCard from '/src/components/TvCard.vue'
+import Card from '/src/components/Card.vue'
 
 export default {
   name: 'Main',
   components: {
-    FilmCard,
-    TvCard
+    Card,
   },
   props: {
     filmList: Array,
-    tvList: Array
+    filmData: Object,
+    tvList: Array,
+    tvData: Object,
+    apiPage: Number
   },
 }
 </script>
@@ -51,12 +86,27 @@ export default {
       font-size: 30px;
       color: #FFF;
       text-transform: uppercase;
-      margin: 30px 0;
+      margin: 20px 0;
     }
     .card-container {
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
+      overflow-x: scroll;
+    }
+    .page-console {
+      text-align: center;
+      button {
+        padding: 10px 20px;
+        background-color: #FFF;
+        border: 1px solid #000;
+        margin: 0 10px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-weight: 600;
+        &:active {
+          background-color: #F00;
+        }
+      }
     }
   }
   
