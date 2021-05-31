@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Header',
   data() {
@@ -22,15 +23,18 @@ export default {
     }
   },
   methods: {
+    // emette query di ricerca per il "searching" in App
     sendQuery() {
       this.$emit('searchQuery', this.apiQuery);
       this.apiQuery = '';
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
+
   header {
     height: 80px;
     display: flex;
@@ -52,4 +56,5 @@ export default {
       }
     }
   }
+
 </style>

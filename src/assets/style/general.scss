@@ -16,11 +16,11 @@ body {
 
 .card {
   position: relative;
-  background-color: gray;
+  background-color: #000;
   border: 2px solid #FFF;
   flex-basis: calc(100% / 5);
-  width: 250px;
-  height: 400px;
+  width: 342px;
+  height: 513px;
   margin-bottom: 20px;
   margin-right: 20px;
   .description-container {
@@ -29,6 +29,9 @@ body {
       overflow-y: scroll;
       span {
         color: #F00;
+        &.cast {
+          color: #FFF;
+        }
       }
     }
   }

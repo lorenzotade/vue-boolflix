@@ -7,8 +7,10 @@
     <Main 
       :filmList="filmList"
       :filmData="filmData"
+      :popMovies="popMovies"
       :tvList="tvList"
       :tvData="tvData"
+      :popTv="popTv"
       :apiPage="apiPage"
       @pagPrec="pagPrec"
       @pagSucc="pagSucc"
@@ -17,6 +19,7 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import Header from './components/Header.vue'
 import Main from './components/Main.vue'
@@ -38,10 +41,15 @@ export default {
       filmList: [],
       tvList: [],
       filmData: {},
-      tvData: {}
+      tvData: {},
+      popMovies: [],
+      popTv: []
     }
   },
   methods: {
+    // chiamata API per prendere i dati film e serie + quelli relativi alle pagine;
+    // si scatena al click del bottone di ricerca o al keyup enter emettendo la 
+    // query di ricerca inserita dall'utente (String)
     searching(apiQuery) {
       this.apiQuery = apiQuery;
       this.apiPafe = 1;
@@ -56,7 +64,7 @@ export default {
       if (apiQuery != '') {
         axios.all([
             axios.get(this.apiMoviesURL, request),
-            axios.get(this.apiTvURL, request)
+            axios.get(this.apiTvURL, request),
           ])
         .then(axios.spread((resMovies, resTv) => {
           this.filmData = resMovies.data;
@@ -70,6 +78,8 @@ export default {
       }
       
     },
+    // metodi scatenati al click dei bottoni prec. e succ. per ripetere la chiamata
+    // API con numero di pagina aggiornato 
     pagPrec(apiPage) {
       this.apiPage = apiPage;
       this.searching(this.apiQuery);
@@ -79,7 +89,23 @@ export default {
       this.searching(this.apiQuery);
     },
   },
+  // al created dell'istanza effettua due chiamate API per recuperare film e serie tv
+  // in tendenza in quella settimana
+  created() {
+    axios.all([
+      axios.get("https://api.themoviedb.org/3/trending/movie/week?api_key=" + this.apiKey),
+      axios.get("https://api.themoviedb.org/3/trending/tv/week?api_key=" + this.apiKey)
+    ])
+      .then(axios.spread((resPopMovies, resPopTv) => {
+        this.popMovies = resPopMovies.data.results;
+        this.popTv = resPopTv.data.results;
+      }))
+      .catch(err => {
+        console.log(err);
+      })
+  }
 }
+
 </script>
 
 <style lang="scss">

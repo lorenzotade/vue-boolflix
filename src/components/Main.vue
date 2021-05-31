@@ -1,6 +1,28 @@
 <template>
   <main class="container">
 
+    <!-- SEZIONE POPULAR -->
+    <!-- film in tendenza mostrati di default al created dell'istanza -->
+    <h3 v-if="this.popMovies.length != 0 && this.filmList.length === 0">Film in tendenza</h3>
+    <div v-if="this.filmList.length === 0" class="card-container">
+      <Card 
+        :card="card"
+        type="movie"
+        v-for="card in popMovies" :key="card.id"
+      />
+    </div>
+    <!-- serie tv in tendenza mostrati di default al created dell'istanza -->
+    <h3 v-if="this.popTv.length != 0 && this.tvList.length === 0">Serie tv in tendenza</h3>
+    <div v-if="this.tvList.length === 0" class="card-container">
+      <Card 
+        :card="card"
+        type="tv"
+        v-for="card in popTv" :key="card.id"
+      />
+    </div> <!-- /SEZIONE POPULAR -->
+
+    <!-- SEZIONE FILM -->
+    <!-- bottoni prec. e succ. per il cambio pagina -->
     <h3 v-if="this.filmList.length != 0">Film</h3>
     <div class="page-console">
       <button 
@@ -19,14 +41,17 @@
       </button>
     </div>
     
+    <!-- componente carta film ripetuto per i risultati della ricerca  -->
     <div class="card-container">
-      <h2 v-if="this.filmList.length === 0">Nessun film trovato</h2>
+      <h2 v-if="this.filmList.length === 0 && this.popMovies.length === 0">Nessun film trovato</h2>
       <Card 
         :card="card"
+        type="movie"
         v-for="card in filmList" :key="card.id"
       />
-    </div>
+    </div> <!-- /SEZIONE FILM -->
 
+    <!-- SEZIONE SERIE TV -->
     <h3 v-if="this.tvList.length != 0">Serie TV</h3>
     <div class="page-console">
       <button 
@@ -45,18 +70,21 @@
       </button>
     </div>
     
+    <!-- componente carta serie tv ripetuto per i risultati della ricerca  -->
     <div class="card-container">
-      <h2 v-if="this.tvList.length === 0">Nessuna serie TV trovata</h2>
+      <h2 v-if="this.tvList.length === 0 && this.popTv.length === 0">Nessuna serie TV trovata</h2>
       <Card 
         :card="card"
+        type="tv"
         v-for="card in tvList" :key="card.id"
       />
-    </div>
+    </div> <!-- /SEZIONE SERIE TV -->
     
   </main>
 </template>
 
 <script>
+
 import Card from '/src/components/Card.vue'
 
 export default {
@@ -67,16 +95,20 @@ export default {
   props: {
     filmList: Array,
     filmData: Object,
+    popMovies: Array,
     tvList: Array,
     tvData: Object,
+    popTv: Array,
     apiPage: Number
   },
 }
+
 </script>
 
 <style lang="scss" scoped>
+
   main {
-    background-color: #434343;
+    background-color: #000;
     padding-top: 20px;
     min-height: calc(100vh - 80px);
     h2 {
@@ -109,6 +141,5 @@ export default {
       }
     }
   }
-  
-  
+
 </style>
